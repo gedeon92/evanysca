@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ce fichier est volontairement identique côté client et côté admin : c'est lui qui garantit que
+   le back-office et la boutique parlent la même langue visuelle. Toute modification de token doit
+   être reportée dans les deux. */
+
+@layer base {
+  :root {
+    /* Neutres chauds : le blanc pur paraît clinique à côté du cuir et des matières naturelles. */
+    --background: 36 33% 97%;
+    --foreground: 24 10% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 24 10% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 24 10% 12%;
+
+    --primary: 24 12% 15%;
+    --primary-foreground: 36 33% 97%;
+
+    --secondary: 33 24% 92%;
+    --secondary-foreground: 24 12% 20%;
+
+    --muted: 33 20% 94%;
+    --muted-foreground: 25 7% 45%;
+
+    /* Terre cuite : l'accent principal, utilisé avec parcimonie. */
+    --accent: 16 42% 56%;
+    --accent-foreground: 36 33% 97%;
+
+    /* Or sourd : le second accent, réservé aux détails (filets, pastilles). */
+    --gold: 38 44% 60%;
+    --gold-foreground: 24 12% 15%;
+
+    --destructive: 2 62% 48%;
+    --destructive-foreground: 36 33% 97%;
+
+    --success: 152 38% 34%;
+    --success-foreground: 36 33% 97%;
+
+    --border: 30 17% 88%;
+    --input: 30 17% 88%;
+    --ring: 16 42% 56%;
+
+    --radius: 1.5rem;
+
+    --gradient-page: linear-gradient(180deg, hsl(36 33% 98%) 0%, hsl(33 26% 95%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(16 42% 56%) 0%, hsl(38 44% 60%) 100%);
+    --gradient-rule: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(30 17% 80%) 50%,
+      transparent 100%
+    );
+
+    /* Ombres diffuses et très peu contrastées : une ombre nette casserait l'impression de papier. */
+    --shadow-soft: 0 1px 2px hsl(24 10% 12% / 0.04), 0 8px 24px hsl(24 10% 12% / 0.05);
+    --shadow-card: 0 1px 2px hsl(24 10% 12% / 0.04), 0 16px 48px hsl(24 10% 12% / 0.08);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
+    /* Graisse 300 sur tout le corps de texte : c'est ce qui donne l'air éditorial. */
+    font-weight: 300;
+    background-image: var(--gradient-page);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+    font-weight: 400;
+    @apply tracking-tight;
+  }
+
+  /* Le focus reste visible partout : le back-office se navigue beaucoup au clavier. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .font-serif-display {
+    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+  }
+
+  .eyebrow {
+    @apply text-[0.6875rem] uppercase tracking-[0.35em] text-muted-foreground;
+  }
+
+  .eyebrow-accent {
+    @apply text-[0.6875rem] uppercase tracking-[0.35em] text-accent;
+  }
+
+  .link-underline {
+    @apply relative inline-block;
+  }
+
+  .link-underline::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-px w-0 bg-current transition-all duration-500;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  .rule-fade {
+    height: 1px;
+    background-image: var(--gradient-rule);
+  }
+
+  .card-soft {
+    @apply rounded-[calc(var(--radius)*0.66)] border border-border bg-card;
+    box-shadow: var(--shadow-soft);
+  }
+}

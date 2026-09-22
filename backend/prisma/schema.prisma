@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+  // Connexion « pooled » (PgBouncer) pour l'API : Render ouvre et ferme beaucoup de connexions,
+  // et Neon en limite le nombre simultané sur la connexion directe.
+  url = env("DATABASE_URL")
+
+  // Les migrations passent obligatoirement par la connexion directe : PgBouncer en mode
+  // transaction ne supporte ni les requêtes préparées ni les verrous de session dont
+  // `prisma migrate` a besoin — sans cette ligne, la migration se bloque ou échoue.
+  directUrl = env("DIRECT_URL")
+}
+
+// Un seul rôle aujourd'hui, mais l'enum évite une migration le jour où une seconde vendeuse
+// n'aura pas à toucher aux catégories.
+enum Role {
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  phone        String?
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+// Un jeton par appareil connecté : déconnecter un téléphone perdu n'invalide pas la session
+// ouverte sur l'ordinateur de la boutique.
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id         String @id @default(uuid())
+  categoryId String
+  line       String
+  name       String
+  slug       String @unique
+  ref        String @unique
+
+  // Curation manuelle de l'ordre en grille : la vendeuse met en avant ce qui se vend, pas ce qui
+  // vient d'être ajouté.
+  displayOrder Int @default(0)
+
+  // En FCFA, entier : la devise n'a pas de sous-unité, un flottant n'apporterait que des erreurs
+  // d'arrondi.
+  price Int
+
+  detail           String  @db.Text
+  shortDescription String  @db.Text
+  story            String  @db.Text
+  designIntent     String  @db.Text
+  materials        String  @db.Text
+  craftsmanship    String  @db.Text
+  care             String  @db.Text
+  tag              String?
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category Category         @relation(fields: [categoryId], references: [id])
+  variants ProductVariant[]
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+// Une teinte/déclinaison : c'est elle qui porte le stock et les photos.
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  colorName String
+  swatchHex String
+  sku       String   @unique
+  stock     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images  ProductImage[]
+
+  @@unique([productId, colorName])
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  variantId String
+  url       String
+  publicId  String?
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId])
+  @@map("product_images")
+}
