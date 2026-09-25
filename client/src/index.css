@@ -68,6 +68,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
+    /* Cormorant Garamond utilise par defaut des chiffres elzeviriens : le 1 se lit « I », le 0
+       « O », et les hauteurs sont inegales. Charmant dans un roman, illisible pour un prix ou un
+       numero de section. On impose des chiffres alignes sur tout le site. */
+    font-variant-numeric: lining-nums;
     /* Graisse 300 sur tout le corps de texte : c'est ce qui donne l'air éditorial. */
     font-weight: 300;
     background-image: var(--gradient-page);
@@ -119,6 +123,12 @@
   .rule-fade {
     height: 1px;
     background-image: var(--gradient-rule);
+  }
+
+  .chiffres {
+    /* Cormorant Garamond utilise par defaut des chiffres elzeviriens : le 1 se lit « I » et le 0
+       « O ». Elegant dans un texte courant, illisible pour un compteur ou un prix. */
+    font-variant-numeric: lining-nums tabular-nums;
   }
 
   .card-soft {

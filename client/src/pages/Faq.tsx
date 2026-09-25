@@ -38,7 +38,7 @@ const QUESTIONS = [
 
 export function Faq() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8 sm:py-16">
       <Reveal>
         <p className="eyebrow-accent">Aide</p>
         <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Questions fréquentes</h1>

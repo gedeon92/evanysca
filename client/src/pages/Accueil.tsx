@@ -36,6 +36,16 @@ export function Accueil() {
 
   const misEnAvant = data?.items.filter((produit) => produit.image).slice(0, 3) ?? [];
 
+  // La grille fait 3 colonnes sur large ecran : 4 ou 5 pieces laisseraient une vignette seule en
+  // bas de rangee, ce qui donne l'impression d'une page inachevee. On n'affiche donc que des
+  // rangees completes.
+  const aAfficher = (() => {
+    const tout = data?.items ?? [];
+    if (tout.length >= 6) return tout.slice(0, 6);
+    if (tout.length >= 3) return tout.slice(0, 3);
+    return tout;
+  })();
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 }, [
     Autoplay({ delay: 5500, stopOnInteraction: false }),
   ]);
@@ -95,16 +105,6 @@ export function Accueil() {
                 >
                   Découvrir la collection
                 </Link>
-                <Link
-                  to="/notre-histoire"
-                  className={classesBouton({
-                    variante: "contour",
-                    taille: "lg",
-                    className: "border-background/40 text-background hover:border-background",
-                  })}
-                >
-                  Notre histoire
-                </Link>
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ export function Accueil() {
       </section>
 
       {/* --- Collection ------------------------------------------------------------------- */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-8 sm:py-32">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-24">
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow-accent">La collection</p>
@@ -145,9 +145,9 @@ export function Accueil() {
 
         {isPending ? (
           <SquelettesGrille nombre={3} />
-        ) : data?.items.length ? (
+        ) : aAfficher.length ? (
           <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {data.items.slice(0, 6).map((produit, index) => (
+            {aAfficher.map((produit, index) => (
               <Reveal key={produit.id} delai={index * 0.08}>
                 <ProductCard produit={produit} />
               </Reveal>
@@ -162,7 +162,7 @@ export function Accueil() {
 
       {/* --- Savoir-faire ----------------------------------------------------------------- */}
       <section className="bg-secondary/50">
-        <div className="mx-auto max-w-7xl px-4 py-24 sm:px-8 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-24">
           <Reveal className="max-w-2xl">
             <p className="eyebrow-accent">Savoir-faire</p>
             <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">
@@ -183,7 +183,7 @@ export function Accueil() {
       </section>
 
       {/* --- Commande par WhatsApp -------------------------------------------------------- */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-8 sm:py-32">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow-accent">Commander</p>
           <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">

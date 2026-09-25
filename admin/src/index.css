@@ -121,6 +121,12 @@
     background-image: var(--gradient-rule);
   }
 
+  .chiffres {
+    /* Cormorant Garamond utilise par defaut des chiffres elzeviriens : le 1 se lit « I » et le 0
+       « O ». Elegant dans un texte courant, illisible pour un compteur ou un prix. */
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
   .card-soft {
     @apply rounded-[calc(var(--radius)*0.66)] border border-border bg-card;
     box-shadow: var(--shadow-soft);

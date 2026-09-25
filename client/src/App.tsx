@@ -13,8 +13,6 @@ const Collection = lazy(() => import("./pages/Collection").then((m) => ({ defaul
 const FicheProduit = lazy(() => import("./pages/FicheProduit").then((m) => ({ default: m.FicheProduit })));
 const Panier = lazy(() => import("./pages/Panier").then((m) => ({ default: m.Panier })));
 const Contact = lazy(() => import("./pages/Contact").then((m) => ({ default: m.Contact })));
-const NotreHistoire = lazy(() => import("./pages/NotreHistoire").then((m) => ({ default: m.NotreHistoire })));
-const Livraison = lazy(() => import("./pages/Livraison").then((m) => ({ default: m.Livraison })));
 const Faq = lazy(() => import("./pages/Faq").then((m) => ({ default: m.Faq })));
 const NonTrouvee = lazy(() => import("./pages/NonTrouvee").then((m) => ({ default: m.NonTrouvee })));
 
@@ -45,8 +43,6 @@ export function App() {
                 <Route path="produit/:slug" element={<FicheProduit />} />
                 <Route path="panier" element={<Panier />} />
                 <Route path="contact" element={<Contact />} />
-                <Route path="notre-histoire" element={<NotreHistoire />} />
-                <Route path="livraison" element={<Livraison />} />
                 <Route path="faq" element={<Faq />} />
                 <Route path="*" element={<NonTrouvee />} />
               </Route>

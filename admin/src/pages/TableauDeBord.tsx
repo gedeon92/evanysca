@@ -24,7 +24,7 @@ function Tuile({
         <p className="eyebrow">{libelle}</p>
         <Icone className={alerte && valeur > 0 ? "h-4 w-4 text-accent" : "h-4 w-4 text-muted-foreground"} aria-hidden />
       </div>
-      <p className="mt-4 font-serif text-4xl leading-none">{valeur}</p>
+      <p className="chiffres mt-4 font-serif text-4xl leading-none">{valeur}</p>
     </div>
   );
 }

@@ -17,8 +17,9 @@ export function ProductCard({ produit }: { produit: ProduitVignette }) {
             style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
           />
         ) : (
-          <div className="flex aspect-[4/5] w-full items-center justify-center">
-            <span className="eyebrow">Visuel à venir</span>
+          <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 border border-dashed border-border">
+            <span className="h-8 w-8 rounded-full border border-border" aria-hidden />
+            <span className="eyebrow">Photo à venir</span>
           </div>
         )}
 

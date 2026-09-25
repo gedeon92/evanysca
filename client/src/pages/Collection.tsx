@@ -44,7 +44,7 @@ export function Collection() {
   const categoriesAffichables = categories?.items.filter((categorie) => categorie.productCount > 0) ?? [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16">
       <header className="max-w-2xl">
         <p className="eyebrow-accent">La collection</p>
         <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Toutes les pièces</h1>

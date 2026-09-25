@@ -73,11 +73,11 @@ export function Panier() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-8 sm:py-16">
       <header>
         <p className="eyebrow-accent">Panier</p>
         <h1 className="mt-4 font-serif text-5xl">
-          {nombre} article{nombre > 1 ? "s" : ""}
+          <span className="chiffres">{nombre}</span> article{nombre > 1 ? "s" : ""}
         </h1>
         {revalidationEnCours && (
           <p className="mt-4 text-xs text-muted-foreground">Vérification de la disponibilité…</p>
@@ -86,7 +86,7 @@ export function Panier() {
 
       <div className="rule-fade my-10" />
 
-      <div className="grid gap-12 lg:grid-cols-[1fr_24rem]">
+      <div className="grid items-start gap-12 lg:grid-cols-[1fr_24rem]">
         {/* --- Lignes ------------------------------------------------------------------- */}
         <ul className="space-y-8">
           {articles.map((article) => {
@@ -164,13 +164,13 @@ export function Panier() {
         </ul>
 
         {/* --- Récapitulatif et commande ------------------------------------------------ */}
-        <aside className="lg:sticky lg:top-28 lg:h-fit">
+        <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="rounded-[calc(var(--radius)*0.66)] border border-border bg-card p-6 shadow-soft sm:p-8">
             <h2 className="font-serif text-2xl">Ta commande</h2>
 
             <div className="mt-6 flex items-baseline justify-between border-t border-border pt-6">
               <span className="eyebrow">Total</span>
-              <span className="font-serif text-3xl">{formatFcfa(total)}</span>
+              <span className="chiffres font-serif text-3xl">{formatFcfa(total)}</span>
             </div>
 
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">

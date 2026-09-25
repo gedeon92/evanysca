@@ -14,3 +14,6 @@ coverage/
 
 # Caches de compilation TypeScript : regeneres a chaque build.
 *.tsbuildinfo
+
+# Captures d ecran generees pour apercu : pas du code source.
+apercus/

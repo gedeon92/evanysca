@@ -26,7 +26,7 @@ le jour où les informations définitives arrivent.
 | `VITE_WHATSAPP_NUMBER` | oui | Format international **sans `+` ni espaces** : `221770000000` |
 | `VITE_BRAND_NAME` | non | Nom affiché partout, y compris dans l'onglet |
 | `VITE_BRAND_TAGLINE` | non | Phrase d'accroche de l'accueil et du pied de page |
-| `VITE_BRAND_CITY` | non | Ville mentionnée sur l'accueil, la livraison et le contact |
+| `VITE_BRAND_CITY` | non | Ville mentionnée sur l'accueil et la page contact |
 | `VITE_BRAND_EMAIL` | non | Affiché seulement s'il est renseigné |
 | `VITE_BRAND_INSTAGRAM` | non | Affiché seulement s'il est renseigné |
 
@@ -37,7 +37,7 @@ que de laisser partir une commande dans le vide.
 ## Pages
 
 `/` accueil éditorial · `/collection` grille filtrable · `/produit/:slug` fiche ·
-`/panier` · `/contact` · `/notre-histoire` · `/livraison` · `/faq` · 404.
+`/panier` · `/contact` · `/faq` · 404.
 
 Pas de `/connexion`, pas de `/compte`, pas de `/commande` : ils n'existent pas dans ce projet.
 
