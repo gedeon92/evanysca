@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAdminAuth } from "../context/AdminAuthContext";
+import { BOUTIQUE } from "../lib/boutique";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/Button";
 
@@ -24,6 +25,11 @@ export function AdminLayout() {
   useEffect(() => {
     setTiroirOuvert(false);
   }, [emplacement.pathname]);
+
+  // Le titre de l'onglet suit lui aussi le nom de la marque, comme côté boutique.
+  useEffect(() => {
+    document.title = `Administration — ${BOUTIQUE.nom}`;
+  }, []);
 
   const surDeconnexion = async () => {
     await deconnecter();
@@ -52,7 +58,7 @@ export function AdminLayout() {
         <div className="mb-10 flex items-center justify-between">
           <div>
             <p className="eyebrow-accent">Administration</p>
-            <p className="mt-2 font-serif text-2xl leading-none">Boutique</p>
+            <p className="mt-2 font-serif text-2xl leading-none">{BOUTIQUE.nom}</p>
           </div>
           <button
             type="button"

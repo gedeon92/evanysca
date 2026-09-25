@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "../components/ui/Button";
 import { Field, Input } from "../components/ui/Field";
 import { useAdminAuth } from "../context/AdminAuthContext";
+import { BOUTIQUE } from "../lib/boutique";
 import { ApiError, type ErreursChamps } from "../lib/api";
 
 export function Connexion() {
@@ -54,7 +55,7 @@ export function Connexion() {
       <div className="w-full max-w-md animate-fade-up">
         <div className="mb-10 text-center">
           <p className="eyebrow-accent">Administration</p>
-          <h1 className="mt-3 font-serif text-4xl">Boutique</h1>
+          <h1 className="mt-3 font-serif text-4xl">{BOUTIQUE.nom}</h1>
           <div className="rule-fade mx-auto mt-6 w-24" />
           <p className="mt-6 text-sm text-muted-foreground">
             Espace réservé à la gestion du catalogue.

@@ -41,7 +41,7 @@ const categories = [
 const produits: ProduitDemo[] = [
   {
     categorySlug: "sacs",
-    line: "Ligne Sahel",
+    line: "Ligne Ogooué",
     name: "Sac Ambre",
     slug: "sac-ambre",
     ref: "SAC-AMB-01",
@@ -52,7 +52,7 @@ const produits: ProduitDemo[] = [
     detail:
       "Format cabas de 32 × 28 cm, doublure coton, une poche zippée intérieure et deux poches plates. Anses de 58 cm.",
     story:
-      "Née d'un carnet de croquis rapporté de Saint-Louis, la ligne Sahel reprend la ligne franche des malles de voyage.",
+      "Née d'un carnet de croquis rapporté du delta de l'Ogooué, cette ligne reprend la forme franche des malles de voyage.",
     designIntent:
       "Une silhouette qui tient debout seule, sans armature apparente : toute la structure vient du choix du cuir.",
     materials: "Cuir de vachette pleine fleur tannage végétal, doublure coton 100 %, laiton doré.",
@@ -77,7 +77,7 @@ const produits: ProduitDemo[] = [
   },
   {
     categorySlug: "sacs",
-    line: "Ligne Sahel",
+    line: "Ligne Ogooué",
     name: "Sac Ondine",
     slug: "sac-ondine",
     ref: "SAC-OND-01",

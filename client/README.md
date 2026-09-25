@@ -23,7 +23,7 @@ le jour où les informations définitives arrivent.
 | Variable | Obligatoire | Détail |
 | --- | --- | --- |
 | `VITE_API_URL` | oui | URL de l'API, sans slash final |
-| `VITE_WHATSAPP_NUMBER` | oui | Format international **sans `+` ni espaces** : `221770000000` |
+| `VITE_WHATSAPP_NUMBER` | oui | Format international **sans `+` ni espaces**. Gabon : indicatif `241` suivi du numero sans son zero initial |
 | `VITE_BRAND_NAME` | non | Nom affiché partout, y compris dans l'onglet |
 | `VITE_BRAND_TAGLINE` | non | Phrase d'accroche de l'accueil et du pied de page |
 | `VITE_BRAND_CITY` | non | Ville mentionnée sur l'accueil et la page contact |

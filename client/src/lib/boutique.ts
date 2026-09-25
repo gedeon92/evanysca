@@ -8,25 +8,25 @@ function lire(valeur: string | undefined, defaut: string): string {
 }
 
 export const BOUTIQUE = {
-  nom: lire(import.meta.env.VITE_BRAND_NAME, "Maison Séraphine"),
+  nom: lire(import.meta.env.VITE_BRAND_NAME, "Evanysca"),
   baseline: lire(
     import.meta.env.VITE_BRAND_TAGLINE,
     "Pièces façonnées à la main, en série très limitée",
   ),
-  ville: lire(import.meta.env.VITE_BRAND_CITY, "Dakar"),
+  ville: lire(import.meta.env.VITE_BRAND_CITY, "Port-Gentil"),
   email: lire(import.meta.env.VITE_BRAND_EMAIL, ""),
   instagram: lire(import.meta.env.VITE_BRAND_INSTAGRAM, ""),
 
   // Format international sans « + » ni espaces : c'est ce qu'attend wa.me. Un numéro mal formaté
   // ouvre WhatsApp sur une conversation vide, sans erreur visible — d'où le contrôle ci-dessous.
-  numeroWhatsApp: lire(import.meta.env.VITE_WHATSAPP_NUMBER, "221770000000"),
+  numeroWhatsApp: lire(import.meta.env.VITE_WHATSAPP_NUMBER, "24100000000"),
 } as const;
 
 export function numeroWhatsAppValide(numero: string = BOUTIQUE.numeroWhatsApp): boolean {
   return /^[1-9]\d{7,14}$/.test(numero);
 }
 
-// Affichage lisible : 221770000000 devient « +221 77 000 00 00 ».
+// Affichage lisible : 241062345678 devient « +241 062 345 678 ».
 export function numeroWhatsAppAffiche(numero: string = BOUTIQUE.numeroWhatsApp): string {
   if (!numeroWhatsAppValide(numero)) return numero;
   const indicatif = numero.slice(0, 3);

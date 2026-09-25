@@ -10,7 +10,7 @@ import {
   type LignePanier,
 } from "./whatsapp";
 
-const NUMERO = "221770000000";
+const NUMERO = "241062345678";
 
 const ligne = (surcharge: Partial<LignePanier> = {}): LignePanier => ({
   variantId: "v1",
