@@ -17,6 +17,13 @@ export const BOUTIQUE = {
   email: lire(import.meta.env.VITE_BRAND_EMAIL, ""),
   instagram: lire(import.meta.env.VITE_BRAND_INSTAGRAM, ""),
 
+  // Adresse du site, ajoutée à la fin des messages WhatsApp : c'est elle qui fait apparaître
+  // l'aperçu avec le logo. Par défaut, l'adresse depuis laquelle la page est servie.
+  site: lire(
+    import.meta.env.VITE_SITE_URL,
+    typeof window === "undefined" ? "" : window.location.origin,
+  ).replace(/\/$/, ""),
+
   // Format international sans « + » ni espaces : c'est ce qu'attend wa.me. Un numéro mal formaté
   // ouvre WhatsApp sur une conversation vide, sans erreur visible — d'où le contrôle ci-dessous.
   numeroWhatsApp: lire(import.meta.env.VITE_WHATSAPP_NUMBER, "24100000000"),

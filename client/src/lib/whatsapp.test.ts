@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { libelleStock, formatFcfa, plafonnerQuantite } from "./utils";
 import {
   LIMITE_URL,
+  referenceCommande,
   construireMessage,
   lienArticleUnique,
   lienCommande,
@@ -50,10 +51,19 @@ describe("construireMessage", () => {
   it("numérote les lignes et affiche le total", () => {
     const message = construireMessage([ligne({ qty: 2 }), ligne({ variantId: "v2", name: "Collier Lune", color: "Or", price: 45000 })]);
 
-    expect(message).toContain("1. Sac Ambre — Noisette");
-    expect(message).toContain("Quantité : 2 — 330 000 FCFA");
-    expect(message).toContain("2. Collier Lune — Or");
-    expect(message).toContain("Total : 375 000 FCFA");
+    expect(message).toContain("1. *Sac Ambre* — Noisette");
+    expect(message).toContain("2 × 165 000 FCFA = 330 000 FCFA");
+    expect(message).toContain("2. *Collier Lune* — Or");
+    expect(message).toContain("*Total : 375 000 FCFA* (3 articles)");
+  });
+
+  it("indique que la commande vient du site, avec une référence et le lien en dernière ligne", () => {
+    const message = construireMessage([ligne()], {}, "lisible", "https://boutique.example");
+
+    expect(message).toContain("Commande passée sur notre site web");
+    expect(message).toMatch(/Réf\. EVA-[0-9A-Z]{6}/);
+    expect(message.endsWith("\n\nhttps://boutique.example")).toBe(true);
+    expect(construireMessage([ligne()])).not.toContain("http");
   });
 
   it("n'ajoute aucune ligne de coordonnées quand le formulaire est laissé vide", () => {
@@ -83,6 +93,14 @@ describe("construireMessage", () => {
 
     expect(compact).toContain("2× Sac Ambre / Noisette — 330 000 FCFA");
     expect(compact.length).toBeLessThan(lisible.length);
+  });
+});
+
+describe("referenceCommande", () => {
+  it("reste identique pour le même panier le même jour, et change avec le panier", () => {
+    const jour = new Date("2026-11-02T10:00:00Z");
+    expect(referenceCommande([ligne()], jour)).toBe(referenceCommande([ligne()], jour));
+    expect(referenceCommande([ligne({ qty: 2 })], jour)).not.toBe(referenceCommande([ligne()], jour));
   });
 });
 
@@ -149,9 +167,14 @@ describe("lienArticleUnique", () => {
     const lien = lienArticleUnique({ name: "Collier Lune", color: "Or", price: 45000 }, NUMERO);
     const message = decodeURIComponent(lien.split("?text=")[1]);
 
-    expect(message).toContain("Collier Lune — Or");
+    expect(message).toContain("*Collier Lune* — Or");
     expect(message).toContain("Prix : 45 000 FCFA");
     expect(message).not.toContain("Total :");
+  });
+
+  it("termine par le lien de la fiche quand le site est connu", () => {
+    const lien = lienArticleUnique({ name: "Collier Lune", color: "Or", price: 45000, slug: "collier-lune" }, NUMERO, "https://boutique.example");
+    expect(decodeURIComponent(lien.split("?text=")[1]).endsWith("https://boutique.example/produit/collier-lune")).toBe(true);
   });
 });
 

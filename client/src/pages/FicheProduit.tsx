@@ -259,7 +259,7 @@ export function FicheProduit() {
 
             {teinte && (
               <BoutonArticleWhatsApp
-                article={{ name: produit.name, color: teinte.colorName, price: produit.price }}
+                article={{ name: produit.name, color: teinte.colorName, price: produit.price, slug: produit.slug }}
                 desactive={indisponible}
                 className="w-full"
               />

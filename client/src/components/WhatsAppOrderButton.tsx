@@ -25,7 +25,7 @@ export function BoutonCommandeWhatsApp({
   className?: string;
 }) {
   const commande = useMemo(
-    () => lienCommande(articles, coordonnees, BOUTIQUE.numeroWhatsApp),
+    () => lienCommande(articles, coordonnees, BOUTIQUE.numeroWhatsApp, BOUTIQUE.site),
     [articles, coordonnees],
   );
 
@@ -75,11 +75,11 @@ export function BoutonArticleWhatsApp({
   desactive,
   className,
 }: {
-  article: { name: string; color: string; price: number };
+  article: { name: string; color: string; price: number; slug?: string };
   desactive?: boolean;
   className?: string;
 }) {
-  const href = useMemo(() => lienArticleUnique(article, BOUTIQUE.numeroWhatsApp), [article]);
+  const href = useMemo(() => lienArticleUnique(article, BOUTIQUE.numeroWhatsApp, BOUTIQUE.site), [article]);
 
   if (desactive || !numeroWhatsAppValide()) {
     return (

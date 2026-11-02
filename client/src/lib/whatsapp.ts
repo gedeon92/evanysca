@@ -1,4 +1,7 @@
+import { BOUTIQUE } from "./boutique";
 import { formatFcfa } from "./utils";
+
+const MARQUE = BOUTIQUE.nom.toUpperCase();
 
 export type LignePanier = {
   variantId: string;
@@ -29,9 +32,18 @@ export function nombreArticles(lignes: LignePanier[]): number {
   return lignes.reduce((total, ligne) => total + ligne.qty, 0);
 }
 
-// Format aéré, celui qu'on veut par défaut : la vendeuse lit la commande d'un coup d'œil.
+// Référence courte pour que la vendeuse et la cliente parlent de la même commande. Elle dépend du
+// contenu du panier et du jour : le lien reste identique d'un rendu à l'autre, sans rien stocker.
+export function referenceCommande(lignes: LignePanier[], jour: Date = new Date()): string {
+  const graine = `${jour.toISOString().slice(0, 10)}|${lignes.map((ligne) => `${ligne.variantId}x${ligne.qty}`).join(",")}`;
+  let empreinte = 5381;
+  for (const caractere of graine) empreinte = ((empreinte * 33) ^ caractere.charCodeAt(0)) >>> 0;
+  return `EVA-${empreinte.toString(36).toUpperCase().padStart(6, "0").slice(-6)}`;
+}
+
+// Le gras (*…*) et l'italique (_…_) sont ceux de WhatsApp : le message arrive mis en forme.
 function ligneLisible(ligne: LignePanier, index: number): string {
-  return `${index + 1}. ${ligne.name} — ${ligne.color}\n   Quantité : ${ligne.qty} — ${formatFcfa(
+  return `${index + 1}. *${ligne.name}* — ${ligne.color}\n    ${ligne.qty} × ${formatFcfa(ligne.price)} = ${formatFcfa(
     ligne.price * ligne.qty,
   )}`;
 }
@@ -46,10 +58,11 @@ export function construireMessage(
   lignes: LignePanier[],
   coordonnees: CoordonneesClient = {},
   format: FormatMessage = "lisible",
+  site = "",
 ): string {
   const corps = lignes
     .map((ligne, index) => (format === "lisible" ? ligneLisible(ligne, index) : ligneCompacte(ligne)))
-    .join("\n");
+    .join(format === "lisible" ? "\n\n" : "\n");
 
   const identite = [
     coordonnees.nom?.trim() ? `Nom : ${coordonnees.nom.trim()}` : null,
@@ -60,11 +73,19 @@ export function construireMessage(
 
   // Le formulaire est facultatif : sans coordonnées, on n'ajoute pas de lignes vides que la
   // vendeuse devrait relire pour rien.
-  const bloc = identite.length ? `\n\n${identite.join("\n")}` : "";
+  const bloc = identite.length ? `\n\n*Mes coordonnées*\n${identite.join("\n")}` : "";
+  const quantite = nombreArticles(lignes);
 
+  // Le lien du site en dernière ligne : WhatsApp en tire l'aperçu avec le logo de la boutique.
   return (
-    `Bonjour, je souhaite passer commande :\n\n${corps}\n\n` +
-    `Total : ${formatFcfa(sousTotal(lignes))}${bloc}`
+    `*NOUVELLE COMMANDE — ${MARQUE}*\n` +
+    `_Commande passée sur notre site web_\n` +
+    `Réf. ${referenceCommande(lignes)}\n\n` +
+    `Bonjour, je souhaite commander :\n\n${corps}\n\n` +
+    `━━━━━━━━━━━━\n` +
+    `*Total : ${formatFcfa(sousTotal(lignes))}* (${quantite} article${quantite > 1 ? "s" : ""})${bloc}\n\n` +
+    `Merci de me confirmer la disponibilité et la livraison.` +
+    (site ? `\n\n${site}` : "")
   );
 }
 
@@ -84,30 +105,36 @@ export function lienCommande(
   lignes: LignePanier[],
   coordonnees: CoordonneesClient,
   numero: string,
+  site = "",
 ): CommandeWhatsApp {
-  const lisible = construireMessage(lignes, coordonnees, "lisible");
+  const lisible = construireMessage(lignes, coordonnees, "lisible", site);
   const hrefLisible = lienWhatsApp(lisible, numero);
 
   if (hrefLisible.length <= LIMITE_URL) {
     return { href: hrefLisible, message: lisible, format: "lisible", longueurUrl: hrefLisible.length };
   }
 
-  const compact = construireMessage(lignes, coordonnees, "compact");
+  const compact = construireMessage(lignes, coordonnees, "compact", site);
   const hrefCompact = lienWhatsApp(compact, numero);
 
   return { href: hrefCompact, message: compact, format: "compact", longueurUrl: hrefCompact.length };
 }
 
-// Bouton « Commander cet article » de la fiche produit : une seule ligne, pas de coordonnées.
+// Bouton « Commander cet article » de la fiche produit : une seule ligne, pas de coordonnées. Le
+// lien de la fiche permet à la vendeuse de voir aussitôt de quelle pièce il s'agit.
 export function lienArticleUnique(
-  article: { name: string; color: string; price: number },
+  article: { name: string; color: string; price: number; slug?: string },
   numero: string,
+  site = "",
 ): string {
   const message =
-    `Bonjour, je suis intéressée par cet article :\n\n` +
-    `${article.name} — ${article.color}\n` +
+    `*DEMANDE — ${MARQUE}*\n` +
+    `_Envoyée depuis notre site web_\n\n` +
+    `Bonjour, je suis intéressé(e) par cet article :\n\n` +
+    `*${article.name}* — ${article.color}\n` +
     `Prix : ${formatFcfa(article.price)}\n\n` +
-    `Est-il disponible ?`;
+    `Est-il disponible ?` +
+    (site ? `\n\n${site}${article.slug ? `/produit/${article.slug}` : ""}` : "");
 
   return lienWhatsApp(message, numero);
 }
