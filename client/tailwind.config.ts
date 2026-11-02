@@ -47,6 +47,8 @@ export default {
         // Hauteur pilotee par Radix : l accordeon de la fiche produit s ouvre sans a-coup.
         // Bandeau défilant de l'accueil : la piste contient deux fois le texte, d'où -50 %.
         defilement: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },
+        // Zoom très lent et réversible sur les photos de la bannière : elles respirent sans bouger.
+        "zoom-lent": { from: { transform: "scale(1)" }, to: { transform: "scale(1.08)" } },
         "accordion-down": {
           from: { height: "0", opacity: "0" },
           to: { height: "var(--radix-accordion-content-height)", opacity: "1" },
@@ -61,6 +63,8 @@ export default {
         "fade-in": "fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
         "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
         defilement: "defilement 40s linear infinite",
+        "defilement-lent": "defilement 70s linear infinite",
+        "zoom-lent": "zoom-lent 16s ease-in-out infinite alternate",
         "accordion-down": "accordion-down 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         "accordion-up": "accordion-up 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
       },

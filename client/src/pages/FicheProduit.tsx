@@ -117,7 +117,7 @@ export function FicheProduit() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16">
+    <div className="mx-auto max-w-7xl px-4 pb-28 pt-12 sm:px-8 sm:py-16">
       <nav className="mb-10 text-xs text-muted-foreground" aria-label="Fil d'Ariane">
         <Link to="/collection" className="link-underline">
           Collection
@@ -330,6 +330,23 @@ export function FicheProduit() {
           Retour à la collection
         </Link>
       </Reveal>
+
+      {/* Barre fixe sur téléphone : le bouton d'ajout reste à portée de pouce pendant qu'on lit
+          les détails ou qu'on regarde les suggestions. */}
+      {!indisponible && (
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:hidden">
+          <div className="flex items-center gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs text-muted-foreground">{produit.name}</p>
+              <p className="chiffres font-serif text-xl text-accent">{formatFcfa(produit.price)}</p>
+            </div>
+            <Bouton taille="md" onClick={surAjout} className="shrink-0 px-6">
+              <ShoppingBag className="h-4 w-4" aria-hidden />
+              Ajouter
+            </Bouton>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

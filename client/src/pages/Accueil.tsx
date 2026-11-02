@@ -3,6 +3,7 @@ import { ArrowRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { listerCategories, listerProduits } from "../api/catalogue";
 import { ProductCard } from "../components/ProductCard";
+import { Ornement } from "../components/Ornement";
 import { Reveal } from "../components/Reveal";
 import { classesBouton } from "../components/ui/Bouton";
 import { SquelettesGrille } from "../components/ui/Skeleton";
@@ -17,6 +18,8 @@ const UNIVERS: Record<string, { image: string; accroche: string }> = {
   "parfums-senteurs": { image: "/accueil/univers-parfums.jpg", accroche: "Parfums, huiles et senteurs" },
   decoration: { image: "/accueil/univers-deco.jpg", accroche: "Plateaux et ambiances parfumées" },
 };
+
+const LOOKBOOK = Array.from({ length: 10 }, (_, index) => `/lookbook/look-${index + 1}.jpg`);
 
 const BANDEAU = ["Boubous brodés", "Ensembles", "Parfums d'exception", "Décoration", BOUTIQUE.ville];
 
@@ -60,7 +63,7 @@ export function Accueil() {
   return (
     <>
       {/* --- Bannière ---------------------------------------------------------------------- */}
-      <section className="relative overflow-hidden bg-primary text-primary-foreground">
+      <section className="grain relative overflow-hidden bg-primary text-primary-foreground">
         {/* Halo doré très diffus derrière les photos : de la profondeur sans motif chargé. */}
         <div
           className="pointer-events-none absolute -right-40 top-0 h-[42rem] w-[42rem] rounded-full opacity-25 blur-3xl"
@@ -102,21 +105,27 @@ export function Accueil() {
           {/* Trois photos en mosaïque : femme, homme, boubou. On voit d'un coup d'œil l'étendue
               de la boutique, sans carrousel qui défile tout seul. */}
           <div className="relative mx-auto grid w-full max-w-xl animate-fade-in grid-cols-[1.25fr_1fr] gap-3 sm:gap-4 lg:max-w-none">
-            <img
-              src="/accueil/ensemble-bordeaux.jpg"
-              alt="Ensemble chemise et pantalon large bordeaux"
-              className="row-span-2 h-full w-full rounded-[var(--radius)] object-cover ring-1 ring-gold/40"
-            />
-            <img
-              src="/accueil/hero-homme.jpg"
-              alt="Grand boubou homme brodé vert"
-              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover ring-1 ring-gold/40"
-            />
-            <img
-              src="/accueil/hero-boubou.jpg"
-              alt="Boubou violet en dentelle"
-              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover ring-1 ring-gold/40"
-            />
+            <div className="row-span-2 overflow-hidden rounded-[var(--radius)] ring-1 ring-gold/40">
+              <img
+                src="/accueil/ensemble-bordeaux.jpg"
+                alt="Ensemble chemise et pantalon large bordeaux"
+                className="h-full w-full object-cover animate-zoom-lent motion-reduce:animate-none"
+              />
+            </div>
+            <div className="overflow-hidden rounded-[var(--radius)] ring-1 ring-gold/40">
+              <img
+                src="/accueil/hero-homme.jpg"
+                alt="Grand boubou homme brodé vert"
+                className="aspect-[4/5] w-full object-cover animate-zoom-lent motion-reduce:animate-none"
+              />
+            </div>
+            <div className="overflow-hidden rounded-[var(--radius)] ring-1 ring-gold/40">
+              <img
+                src="/accueil/hero-boubou.jpg"
+                alt="Boubou violet en dentelle"
+                className="aspect-[4/5] w-full object-cover animate-zoom-lent motion-reduce:animate-none"
+              />
+            </div>
           </div>
         </div>
 
@@ -145,6 +154,7 @@ export function Accueil() {
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
               Trouvez votre <span className="font-script text-5xl text-gold sm:text-6xl">style</span>
             </h2>
+            <Ornement className="mt-6" />
           </Reveal>
 
           <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
@@ -214,6 +224,43 @@ export function Accueil() {
         </div>
       </section>
 
+      {/* --- Lookbook --------------------------------------------------------------------- */}
+      <section className="grain overflow-hidden bg-primary py-20 text-primary-foreground sm:py-28">
+        <Reveal className="mx-auto max-w-2xl px-4 text-center">
+          <p className="text-[0.6875rem] uppercase tracking-[0.4em] text-gold">Le lookbook</p>
+          <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+            Portées avec <span className="font-script text-5xl text-gold sm:text-6xl">élégance</span>
+          </h2>
+          <Ornement className="mt-6" />
+        </Reveal>
+
+        {/* Bande de photos qui défile lentement et s'arrête au survol pour qu'on puisse regarder. */}
+        <div className="group mt-14 overflow-hidden" aria-hidden>
+          <div className="flex w-max animate-defilement-lent gap-4 group-hover:[animation-play-state:paused] motion-reduce:animate-none sm:gap-6">
+            {[...LOOKBOOK, ...LOOKBOOK].map((photo, index) => (
+              <div
+                key={index}
+                className="w-44 shrink-0 overflow-hidden rounded-[var(--radius)] ring-1 ring-gold/30 sm:w-64"
+              >
+                <img
+                  src={photo}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[4/5] w-full object-cover transition-transform duration-1000 hover:scale-110"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-14 text-center">
+          <Link to="/collection" className={classesBouton({ variante: "or", taille: "lg" })}>
+            Voir toute la collection
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+      </section>
+
       {/* --- Comment commander ------------------------------------------------------------- */}
       <section className="bg-secondary/50">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-28">
@@ -222,6 +269,7 @@ export function Accueil() {
             <h2 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">
               Une conversation, <span className="font-script text-5xl text-gold sm:text-6xl">pas un formulaire</span>
             </h2>
+            <Ornement className="mt-6" />
             <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
               Pas de compte à créer ni de carte à saisir : on règle ensemble la livraison et le
               paiement, comme en boutique.

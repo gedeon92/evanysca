@@ -15,7 +15,7 @@ export function Footer() {
   const joignable = numeroWhatsAppValide();
 
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="grain bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8">
         {/* Trois blocs de poids comparables : la marque, la navigation, l'appel à commander.
             Deux colonnes de liens très courtes laissaient un grand vide au milieu. */}
