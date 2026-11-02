@@ -18,7 +18,9 @@ const NonTrouvee = lazy(() => import("./pages/NonTrouvee").then((m) => ({ defaul
 
 const clientRequetes = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: 60_000, refetchOnWindowFocus: false, retry: 1 },
+    // Revérifier au retour sur l'onglet : la vendeuse garde souvent la boutique ouverte à côté de
+    // l'admin, et une photo supprimée ou un prix changé restait affiché jusqu'au rechargement.
+    queries: { staleTime: 10_000, refetchOnWindowFocus: true, retry: 1 },
   },
 });
 
