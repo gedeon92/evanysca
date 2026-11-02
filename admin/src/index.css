@@ -74,6 +74,12 @@
     }
   }
 
+  /* Toutes les pages (connexion comprise) se limitent à la largeur réellement visible, mesurée
+     dans main.tsx : quand la page est grossie, rien ne sort de l'écran ni ne se décale. */
+  #root {
+    max-width: var(--largeur-visible, 100%);
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
