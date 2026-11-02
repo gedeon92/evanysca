@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "../components/ui/Button";
@@ -16,6 +16,14 @@ export function Connexion() {
   const [motDePasse, setMotDePasse] = useState("");
   const [enCours, setEnCours] = useState(false);
   const [erreurs, setErreurs] = useState<ErreursChamps>({});
+
+  // La page de connexion ne défile pas : le formulaire reste immobile au centre de l'écran.
+  useEffect(() => {
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, []);
 
   // Déjà connecté : on renvoie là où la personne voulait aller, sinon au tableau de bord.
   if (!chargementInitial && utilisateur) {
@@ -51,8 +59,8 @@ export function Connexion() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md animate-fade-up">
+    <div className="flex h-[100dvh] items-center justify-center overflow-hidden px-4">
+      <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <p className="eyebrow-accent">Administration</p>
           <h1 className="mt-3 font-serif text-4xl">{BOUTIQUE.nom}</h1>
