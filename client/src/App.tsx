@@ -18,9 +18,17 @@ const NonTrouvee = lazy(() => import("./pages/NonTrouvee").then((m) => ({ defaul
 
 const clientRequetes = new QueryClient({
   defaultOptions: {
-    // Revérifier au retour sur l'onglet : la vendeuse garde souvent la boutique ouverte à côté de
-    // l'admin, et une photo supprimée ou un prix changé restait affiché jusqu'au rechargement.
-    queries: { staleTime: 10_000, refetchOnWindowFocus: true, retry: 1 },
+    // Ce que la vendeuse change dans l'admin doit se voir tout de suite : chaque page redemande le
+    // catalogue à l'affichage (staleTime 0), au retour sur l'onglet, et toutes les 15 secondes tant
+    // que la page reste visible. Les données affichées sont conservées pendant la requête : pas de
+    // clignotement, la grille change seulement si quelque chose a changé.
+    queries: {
+      staleTime: 0,
+      refetchOnWindowFocus: true,
+      refetchInterval: 15_000,
+      refetchIntervalInBackground: false,
+      retry: 1,
+    },
   },
 });
 
