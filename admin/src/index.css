@@ -75,9 +75,12 @@
   }
 
   /* Toutes les pages (connexion comprise) se limitent à la largeur réellement visible, mesurée
-     dans main.tsx : quand la page est grossie, rien ne sort de l'écran ni ne se décale. */
+     dans main.tsx, et suivent ses déplacements : quand la page est grossie, rien ne sort de
+     l'écran ni ne glisse. */
   #root {
     max-width: var(--largeur-visible, 100%);
+    /* Marge plutôt que transform : un transform casserait les éléments en position fixe. */
+    margin-left: var(--decalage-x, 0px);
   }
 
   body {

@@ -59,7 +59,12 @@ export function Connexion() {
   };
 
   return (
-    <div className="flex h-[100dvh] items-center justify-center overflow-hidden px-4">
+    <div
+      className="flex items-center justify-center overflow-hidden px-4"
+      // Hauteur et position de la zone visible : le formulaire reste au centre et immobile, même
+      // quand la page grossie est déplacée avec deux doigts.
+      style={{ height: "var(--hauteur-visible, 100dvh)", transform: "translateY(var(--decalage-y, 0px))" }}
+    >
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <p className="eyebrow-accent">Administration</p>
