@@ -31,6 +31,8 @@ export default {
       fontFamily: {
         serif: ['"Cormorant Garamond"', "ui-serif", "Georgia", "serif"],
         sans: ['"Jost"', "ui-sans-serif", "system-ui", "sans-serif"],
+        // Calligraphie de la marque, la même que le logo : réservée aux mots d'accent.
+        script: ['"Great Vibes"', "cursive"],
       },
       boxShadow: {
         soft: "var(--shadow-soft)",
@@ -43,6 +45,8 @@ export default {
           to: { opacity: "1", transform: "translateY(0)" },
         },
         // Hauteur pilotee par Radix : l accordeon de la fiche produit s ouvre sans a-coup.
+        // Bandeau défilant de l'accueil : la piste contient deux fois le texte, d'où -50 %.
+        defilement: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },
         "accordion-down": {
           from: { height: "0", opacity: "0" },
           to: { height: "var(--radix-accordion-content-height)", opacity: "1" },
@@ -56,6 +60,7 @@ export default {
         // Courbe très amortie : l'apparition doit se poser, pas rebondir.
         "fade-in": "fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
         "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        defilement: "defilement 40s linear infinite",
         "accordion-down": "accordion-down 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         "accordion-up": "accordion-up 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
       },

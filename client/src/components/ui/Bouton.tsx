@@ -1,13 +1,16 @@
 import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes } from "react";
 import { cn } from "../../lib/utils";
 
-type Variante = "primaire" | "contour" | "accent" | "whatsapp" | "discret";
+type Variante = "primaire" | "contour" | "accent" | "or" | "contourClair" | "whatsapp" | "discret";
 type Taille = "sm" | "md" | "lg";
 
 const VARIANTES: Record<Variante, string> = {
   primaire: "bg-primary text-primary-foreground hover:bg-primary/90",
   contour: "border border-foreground/20 text-foreground hover:border-foreground/50",
   accent: "bg-accent text-accent-foreground hover:bg-accent/90",
+  // Pour les fonds sombres (accueil, pied de page) : l'or de la marque et un contour crème.
+  or: "bg-gold text-gold-foreground hover:bg-gold/90 shadow-[0_8px_30px_-8px_hsl(var(--gold)/0.6)]",
+  contourClair: "border border-primary-foreground/30 text-primary-foreground hover:border-primary-foreground/70",
   // Vert officiel de WhatsApp : le bouton doit être reconnaissable au premier coup d'œil.
   whatsapp: "bg-[#25D366] text-white hover:bg-[#1FBE5A]",
   discret: "text-foreground hover:bg-muted",

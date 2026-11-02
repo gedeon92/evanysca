@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { usePanier } from "../context/CartContext";
 import { BOUTIQUE } from "../lib/boutique";
 import { cn } from "../lib/utils";
+import { Monogramme } from "./Monogramme";
 
 const LIENS = [
   { to: "/collection", libelle: "Collection" },
@@ -35,11 +36,19 @@ export function Header() {
     };
   }, [menuOuvert]);
 
+  // En haut de l'accueil, la barre prend le brun de la grande bannière pour ne faire qu'un avec
+  // elle ; dès qu'on descend, elle redevient claire.
+  const surSombre = emplacement.pathname === "/" && !defile;
+
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-all duration-500",
-        defile ? "border-b border-border bg-background/90 backdrop-blur" : "bg-transparent",
+        "sticky top-0 z-40 transition-colors duration-500",
+        surSombre
+          ? "bg-primary text-primary-foreground"
+          : defile
+            ? "border-b border-border bg-background/90 backdrop-blur"
+            : "bg-transparent",
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-5 sm:px-8">
@@ -52,8 +61,9 @@ export function Header() {
           <Menu className="h-5 w-5" />
         </button>
 
-        <Link to="/" className="font-serif text-xl tracking-wide sm:text-2xl lg:flex-1">
-          {BOUTIQUE.nom}
+        <Link to="/" className="flex items-center gap-3 lg:flex-1" aria-label={`${BOUTIQUE.nom}, accueil`}>
+          <Monogramme className="h-9 w-9 sm:h-10 sm:w-10" />
+          <span className="font-serif text-xl tracking-[0.08em] sm:text-2xl">{BOUTIQUE.nom}</span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -64,7 +74,7 @@ export function Header() {
               className={({ isActive }) =>
                 cn(
                   "link-underline text-[0.6875rem] uppercase tracking-[0.25em]",
-                  isActive && "text-accent",
+                  isActive && (surSombre ? "text-gold" : "text-accent"),
                 )
               }
             >
@@ -81,7 +91,7 @@ export function Header() {
           >
             <ShoppingBag className="h-5 w-5" aria-hidden />
             {nombre > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[0.625rem] text-accent-foreground">
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[0.625rem] text-gold-foreground">
                 {nombre}
               </span>
             )}
@@ -90,9 +100,12 @@ export function Header() {
       </div>
 
       {menuOuvert && (
-        <div className="fixed inset-0 z-50 animate-fade-in bg-background lg:hidden">
+        <div className="fixed inset-0 z-50 animate-fade-in bg-background text-foreground lg:hidden">
           <div className="flex items-center justify-between px-4 py-5">
-            <span className="font-serif text-xl">{BOUTIQUE.nom}</span>
+            <span className="flex items-center gap-3 font-serif text-xl">
+              <Monogramme className="h-9 w-9" />
+              {BOUTIQUE.nom}
+            </span>
             <button type="button" onClick={() => setMenuOuvert(false)} className="rounded-full p-2" aria-label="Fermer le menu">
               <X className="h-5 w-5" />
             </button>

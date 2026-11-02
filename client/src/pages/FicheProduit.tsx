@@ -4,7 +4,8 @@ import { ChevronDown, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { chargerProduit } from "../api/catalogue";
+import { chargerProduit, listerProduits } from "../api/catalogue";
+import { ProductCard } from "../components/ProductCard";
 import { Reveal } from "../components/Reveal";
 import { BoutonArticleWhatsApp } from "../components/WhatsAppOrderButton";
 import { Bouton, classesBouton } from "../components/ui/Bouton";
@@ -22,6 +23,15 @@ export function FicheProduit() {
     queryFn: () => chargerProduit(slug as string),
     enabled: Boolean(slug),
   });
+
+  // Suggestions de la même catégorie, chargées en parallèle de la fiche : 5 pour en garder 4
+  // une fois la pièce affichée retirée.
+  const { data: memeCategorie } = useQuery({
+    queryKey: ["produits", "suggestions", produit?.category.slug],
+    queryFn: () => listerProduits({ category: produit?.category.slug, limit: 5 }),
+    enabled: Boolean(produit),
+  });
+  const suggestions = (memeCategorie?.items ?? []).filter((element) => element.id !== produit?.id).slice(0, 4);
 
   const [idTeinte, setIdTeinte] = useState<string | null>(null);
   const [indexImage, setIndexImage] = useState(0);
@@ -156,12 +166,12 @@ export function FicheProduit() {
         </div>
 
         {/* --- Informations ------------------------------------------------------------- */}
-        <div className="lg:py-4">
+        <div className="lg:sticky lg:top-28 lg:self-start lg:py-4">
           <p className="eyebrow">{produit.line}</p>
           <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">{produit.name}</h1>
 
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <p className="text-lg">{formatFcfa(produit.price)}</p>
+            <p className="chiffres font-serif text-3xl text-accent">{formatFcfa(produit.price)}</p>
             {alerte && (
               <span
                 className={cn(
@@ -297,7 +307,25 @@ export function FicheProduit() {
         </div>
       </div>
 
-      <Reveal className="mt-24 text-center">
+      {suggestions.length > 0 && (
+        <section className="mt-24 border-t border-border pt-16">
+          <Reveal className="text-center">
+            <p className="eyebrow-accent">{produit.category.name}</p>
+            <h2 className="mt-4 font-serif text-4xl">
+              Vous aimerez <span className="font-script text-5xl text-gold">aussi</span>
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
+            {suggestions.map((element, index) => (
+              <Reveal key={element.id} delai={index * 0.06}>
+                <ProductCard produit={element} />
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <Reveal className="mt-20 text-center">
         <Link to="/collection" className="link-underline text-xs uppercase tracking-[0.25em]">
           Retour à la collection
         </Link>

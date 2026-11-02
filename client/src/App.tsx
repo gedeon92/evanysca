@@ -35,7 +35,7 @@ const clientRequetes = new QueryClient({
 function SqueletteDePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8">
-      <SquelettesGrille nombre={6} />
+      <SquelettesGrille nombre={8} />
     </div>
   );
 }

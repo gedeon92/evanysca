@@ -48,7 +48,9 @@ export function Collection() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16">
       <header className="max-w-2xl">
         <p className="eyebrow-accent">La collection</p>
-        <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Toutes les pièces</h1>
+        <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">
+          Toutes les <span className="font-script text-6xl text-gold sm:text-7xl">pièces</span>
+        </h1>
         <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
           Vêtements, parfums et décoration, sélectionnés à {BOUTIQUE.ville}. Ce qui est affiché est
           disponible.
@@ -56,12 +58,12 @@ export function Collection() {
       </header>
 
       {categoriesAffichables.length > 0 && (
-        <nav className="mt-12 flex flex-wrap gap-3" aria-label="Filtrer par catégorie">
+        <nav className="-mx-4 mt-10 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" aria-label="Filtrer par catégorie">
           <button
             type="button"
             onClick={() => changerCategorie("")}
             className={cn(
-              "rounded-full border px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] transition-colors",
+              "shrink-0 rounded-full border px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] transition-colors",
               categorieActive === ""
                 ? "border-foreground bg-foreground text-background"
                 : "border-border text-muted-foreground hover:border-foreground/40",
@@ -76,7 +78,7 @@ export function Collection() {
               type="button"
               onClick={() => changerCategorie(categorie.slug)}
               className={cn(
-                "rounded-full border px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] transition-colors",
+                "shrink-0 rounded-full border px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] transition-colors",
                 categorieActive === categorie.slug
                   ? "border-foreground bg-foreground text-background"
                   : "border-border text-muted-foreground hover:border-foreground/40",
@@ -91,7 +93,7 @@ export function Collection() {
       <div className="rule-fade my-12" />
 
       {isPending ? (
-        <SquelettesGrille nombre={6} />
+        <SquelettesGrille nombre={8} />
       ) : !data?.items.length ? (
         <div className="py-24 text-center">
           <p className="font-serif text-3xl">Rien à afficher ici</p>
@@ -108,9 +110,9 @@ export function Collection() {
         </div>
       ) : (
         <>
-          <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-6 sm:gap-y-14 lg:grid-cols-4">
             {data.items.map((produit, index) => (
-              <Reveal key={produit.id} delai={Math.min(index, 5) * 0.06}>
+              <Reveal key={produit.id} delai={(index % 4) * 0.06}>
                 <ProductCard produit={produit} />
               </Reveal>
             ))}
