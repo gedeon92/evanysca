@@ -3,6 +3,7 @@ import { libelleStock, formatFcfa, plafonnerQuantite } from "./utils";
 import {
   LIMITE_URL,
   referenceCommande,
+  calligraphie,
   construireMessage,
   lienArticleUnique,
   lienCommande,
@@ -51,10 +52,10 @@ describe("construireMessage", () => {
   it("numérote les lignes et affiche le total", () => {
     const message = construireMessage([ligne({ qty: 2 }), ligne({ variantId: "v2", name: "Collier Lune", color: "Or", price: 45000 })]);
 
-    expect(message).toContain("1. *Sac Ambre* — Noisette");
+    expect(message).toContain("1. Sac Ambre — Noisette");
     expect(message).toContain("2 × 165 000 FCFA = 330 000 FCFA");
-    expect(message).toContain("2. *Collier Lune* — Or");
-    expect(message).toContain("*Total : 375 000 FCFA* (3 articles)");
+    expect(message).toContain("2. Collier Lune — Or");
+    expect(message).toContain(`${calligraphie("Total")} : 375 000 FCFA (3 articles)`);
   });
 
   it("indique que la commande vient du site, avec une référence et le lien en dernière ligne", () => {
@@ -93,6 +94,13 @@ describe("construireMessage", () => {
 
     expect(compact).toContain("2× Sac Ambre / Noisette — 330 000 FCFA");
     expect(compact.length).toBeLessThan(lisible.length);
+  });
+});
+
+describe("calligraphie", () => {
+  it("transforme les lettres sans toucher aux chiffres, accents ni ponctuation", () => {
+    expect(calligraphie("Evanysca")).toBe("𝓔𝓿𝓪𝓷𝔂𝓼𝓬𝓪");
+    expect(calligraphie("Té 12 :")).toBe("𝓣é 12 :");
   });
 });
 
@@ -137,7 +145,7 @@ describe("lienCommande", () => {
 
     const commande = lienCommande(gros, {}, NUMERO);
     expect(commande.format).toBe("compact");
-    expect(commande.message).toContain(`Total : ${formatFcfa(165000 * 3 * 30)}`);
+    expect(commande.message).toContain(`${calligraphie("Total")} : ${formatFcfa(165000 * 3 * 30)}`);
   });
 
   it("échappe les caractères spéciaux : le message doit survivre à l'aller-retour", () => {
@@ -167,9 +175,9 @@ describe("lienArticleUnique", () => {
     const lien = lienArticleUnique({ name: "Collier Lune", color: "Or", price: 45000 }, NUMERO);
     const message = decodeURIComponent(lien.split("?text=")[1]);
 
-    expect(message).toContain("*Collier Lune* — Or");
+    expect(message).toContain("Collier Lune — Or");
     expect(message).toContain("Prix : 45 000 FCFA");
-    expect(message).not.toContain("Total :");
+    expect(message).not.toContain(calligraphie("Total"));
   });
 
   it("termine par le lien de la fiche quand le site est connu", () => {

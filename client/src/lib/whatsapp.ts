@@ -1,7 +1,18 @@
 import { BOUTIQUE } from "./boutique";
 import { formatFcfa } from "./utils";
 
-const MARQUE = BOUTIQUE.nom.toUpperCase();
+// WhatsApp n'accepte aucune police : l'écriture calligraphiée passe par les lettres « script
+// gras » d'Unicode, qui s'affichent partout. Elles n'existent que pour A-Z et a-z, donc seuls des
+// titres sans accent l'utilisent ; noms d'articles et prix restent en lettres ordinaires, lisibles.
+export function calligraphie(texte: string): string {
+  return texte.replace(/[A-Za-z]/g, (lettre) => {
+    const code = lettre.charCodeAt(0);
+    const base = code <= 90 ? 0x1d4d0 + code - 65 : 0x1d4ea + code - 97;
+    return String.fromCodePoint(base);
+  });
+}
+
+const MARQUE = calligraphie(BOUTIQUE.nom);
 
 export type LignePanier = {
   variantId: string;
@@ -41,9 +52,8 @@ export function referenceCommande(lignes: LignePanier[], jour: Date = new Date()
   return `EVA-${empreinte.toString(36).toUpperCase().padStart(6, "0").slice(-6)}`;
 }
 
-// Le gras (*…*) et l'italique (_…_) sont ceux de WhatsApp : le message arrive mis en forme.
 function ligneLisible(ligne: LignePanier, index: number): string {
-  return `${index + 1}. *${ligne.name}* — ${ligne.color}\n    ${ligne.qty} × ${formatFcfa(ligne.price)} = ${formatFcfa(
+  return `${index + 1}. ${ligne.name} — ${ligne.color}\n    ${ligne.qty} × ${formatFcfa(ligne.price)} = ${formatFcfa(
     ligne.price * ligne.qty,
   )}`;
 }
@@ -73,17 +83,17 @@ export function construireMessage(
 
   // Le formulaire est facultatif : sans coordonnées, on n'ajoute pas de lignes vides que la
   // vendeuse devrait relire pour rien.
-  const bloc = identite.length ? `\n\n*Mes coordonnées*\n${identite.join("\n")}` : "";
+  const bloc = identite.length ? `\n\n${calligraphie("Mes informations")}\n${identite.join("\n")}` : "";
   const quantite = nombreArticles(lignes);
 
   // Le lien du site en dernière ligne : WhatsApp en tire l'aperçu avec le logo de la boutique.
   return (
-    `*NOUVELLE COMMANDE — ${MARQUE}*\n` +
-    `_Commande passée sur notre site web_\n` +
+    `${MARQUE}\n` +
+    `${calligraphie("Nouvelle commande")}\n` +
+    `Commande passée sur notre site web\n` +
     `Réf. ${referenceCommande(lignes)}\n\n` +
     `Bonjour, je souhaite commander :\n\n${corps}\n\n` +
-    `━━━━━━━━━━━━\n` +
-    `*Total : ${formatFcfa(sousTotal(lignes))}* (${quantite} article${quantite > 1 ? "s" : ""})${bloc}\n\n` +
+    `${calligraphie("Total")} : ${formatFcfa(sousTotal(lignes))} (${quantite} article${quantite > 1 ? "s" : ""})${bloc}\n\n` +
     `Merci de me confirmer la disponibilité et la livraison.` +
     (site ? `\n\n${site}` : "")
   );
@@ -128,10 +138,11 @@ export function lienArticleUnique(
   site = "",
 ): string {
   const message =
-    `*DEMANDE — ${MARQUE}*\n` +
-    `_Envoyée depuis notre site web_\n\n` +
+    `${MARQUE}\n` +
+    `${calligraphie("Demande de renseignement")}\n` +
+    `Envoyée depuis notre site web\n\n` +
     `Bonjour, je suis intéressé(e) par cet article :\n\n` +
-    `*${article.name}* — ${article.color}\n` +
+    `${article.name} — ${article.color}\n` +
     `Prix : ${formatFcfa(article.price)}\n\n` +
     `Est-il disponible ?` +
     (site ? `\n\n${site}${article.slug ? `/produit/${article.slug}` : ""}` : "");
