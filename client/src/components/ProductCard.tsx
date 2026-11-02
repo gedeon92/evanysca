@@ -13,11 +13,11 @@ export function ProductCard({ produit }: { produit: ProduitVignette }) {
             src={produit.image}
             alt={produit.name}
             loading="lazy"
-            className="aspect-[4/5] w-full object-cover transition-transform [transition-duration:1200ms] group-hover:scale-105"
+            className="aspect-[3/4] w-full object-cover transition-transform [transition-duration:1200ms] group-hover:scale-105"
             style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
           />
         ) : (
-          <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 border border-dashed border-border">
+          <div className="flex aspect-[3/4] w-full flex-col items-center justify-center gap-3 border border-dashed border-border">
             <span className="h-8 w-8 rounded-full border border-border" aria-hidden />
             <span className="eyebrow">Photo à venir</span>
           </div>
@@ -49,7 +49,8 @@ export function ProductCard({ produit }: { produit: ProduitVignette }) {
         <div className="flex items-center justify-between gap-4 pt-1">
           <p className="text-sm text-muted-foreground">{formatFcfa(produit.price)}</p>
 
-          {produit.swatches.length > 0 && (
+          {/* Une seule pastille n'apprend rien : elle ne s'affiche que s'il y a un vrai choix. */}
+          {produit.swatches.length > 1 && (
             <div className="flex items-center gap-1.5" aria-label={`${produit.swatches.length} teintes disponibles`}>
               {produit.swatches.slice(0, 4).map((pastille) => (
                 <span

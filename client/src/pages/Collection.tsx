@@ -5,6 +5,7 @@ import { ProductCard } from "../components/ProductCard";
 import { Reveal } from "../components/Reveal";
 import { classesBouton } from "../components/ui/Bouton";
 import { SquelettesGrille } from "../components/ui/Skeleton";
+import { BOUTIQUE } from "../lib/boutique";
 import { cn } from "../lib/utils";
 
 const PAR_PAGE = 12;
@@ -49,7 +50,8 @@ export function Collection() {
         <p className="eyebrow-accent">La collection</p>
         <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Toutes les pièces</h1>
         <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-          Chaque teinte est produite en très petite quantité. Ce qui est affiché est ce qui reste.
+          Vêtements, parfums et décoration, sélectionnés à {BOUTIQUE.ville}. Ce qui est affiché est
+          disponible.
         </p>
       </header>
 

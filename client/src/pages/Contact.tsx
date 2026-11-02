@@ -14,10 +14,10 @@ export function Contact() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-8 sm:py-16">
       <Reveal>
         <p className="eyebrow-accent">Contact</p>
-        <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Écris-nous</h1>
+        <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Écrivez-nous</h1>
         <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
           Une question sur une pièce, une teinte, un délai ? Le plus simple est d'envoyer un
-          message : on répond dans la journée.
+          message : nous répondons dans la journée.
         </p>
       </Reveal>
 

@@ -45,13 +45,15 @@ export function FicheProduit() {
   const sections = useMemo(
     () =>
       produit
-        ? [
+        ? // Deux sections au lieu de six : sur une fiche de vêtement ou de parfum, « Intention de
+          // design » et « Savoir-faire » répétaient la description et noyaient l'essentiel.
+          [
             { cle: "detail", titre: "Détails", texte: produit.detail },
-            { cle: "story", titre: "Histoire", texte: produit.story },
-            { cle: "designIntent", titre: "Intention de design", texte: produit.designIntent },
-            { cle: "materials", titre: "Matières", texte: produit.materials },
-            { cle: "craftsmanship", titre: "Savoir-faire", texte: produit.craftsmanship },
-            { cle: "care", titre: "Entretien", texte: produit.care },
+            {
+              cle: "materials",
+              titre: "Matières & entretien",
+              texte: [produit.materials, produit.care].filter(Boolean).join("\n\n"),
+            },
           ]
         : [],
     [produit],
@@ -124,10 +126,10 @@ export function FicheProduit() {
               <img
                 src={imageActive.url}
                 alt={`${produit.name} — ${teinte?.colorName ?? ""}`}
-                className="aspect-[4/5] w-full object-cover"
+                className="aspect-[3/4] w-full object-cover"
               />
             ) : (
-              <div className="flex aspect-[4/5] w-full items-center justify-center">
+              <div className="flex aspect-[3/4] w-full items-center justify-center">
                 <span className="eyebrow">Visuel à venir</span>
               </div>
             )}
@@ -179,8 +181,9 @@ export function FicheProduit() {
           <div className="rule-fade my-10" />
 
           {/* --- Teintes ---------------------------------------------------------------- */}
-          {produit.variants.length > 0 && (
-            <div>
+          {/* Avec une seule teinte, le sélecteur n'offre aucun choix et alourdit la fiche. */}
+          {produit.variants.length > 1 && (
+            <div className="mb-10">
               <div className="flex items-baseline justify-between gap-4">
                 <p className="eyebrow">Teinte</p>
                 <p className="text-sm">{teinte?.colorName}</p>
@@ -221,7 +224,7 @@ export function FicheProduit() {
           )}
 
           {/* --- Quantité et ajout ------------------------------------------------------ */}
-          <div className="mt-10 space-y-4">
+          <div className="space-y-4">
             {!indisponible && teinte && (
               <div className="flex items-center gap-4">
                 <p className="eyebrow">Quantité</p>
@@ -264,14 +267,14 @@ export function FicheProduit() {
 
             {indisponible && (
               <p className="text-center text-xs leading-relaxed text-muted-foreground">
-                Cette pièce n'est plus disponible. Écris-nous sur WhatsApp : certaines sont refaites
-                sur demande.
+                Cette pièce n'est plus disponible. Écrivez-nous sur WhatsApp : nous vous prévenons
+                dès son retour.
               </p>
             )}
           </div>
 
           {/* --- Accordéon -------------------------------------------------------------- */}
-          <Accordion.Root type="single" collapsible className="mt-12 border-t border-border">
+          <Accordion.Root type="single" collapsible defaultValue="detail" className="mt-12 border-t border-border">
             {sections.map((section) => (
               <Accordion.Item key={section.cle} value={section.cle} className="border-b border-border">
                 <Accordion.Header>

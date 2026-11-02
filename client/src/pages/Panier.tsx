@@ -50,7 +50,7 @@ export function Panier() {
     // Le panier n'est surtout pas vidé : rien n'est confirmé tant que la conversation n'a pas eu
     // lieu, et un panier effacé d'office serait impossible à retrouver.
     toast.success("Commande envoyée sur WhatsApp", {
-      description: "Ton panier reste disponible tant que tu ne le vides pas.",
+      description: "Votre panier reste disponible tant que vous ne le videz pas.",
       duration: 8000,
     });
   };
@@ -62,7 +62,7 @@ export function Panier() {
         <h1 className="mt-6 font-serif text-4xl">Ton panier est vide</h1>
         <div className="rule-fade my-8 w-32" />
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Parcours la collection et ajoute les pièces qui te plaisent. Tu enverras le tout sur
+          Parcourez la collection et ajoutez les pièces qui vous plaisent. Vous enverrez le tout sur
           WhatsApp en une seule fois.
         </p>
         <Link to="/collection" className={classesBouton({ className: "mt-10" })}>
@@ -174,7 +174,7 @@ export function Panier() {
             </div>
 
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              La livraison se convient directement dans la conversation, selon ton quartier.
+              La livraison se convient directement dans la conversation, selon votre quartier.
             </p>
 
             <div className="rule-fade my-8" />

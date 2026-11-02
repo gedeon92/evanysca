@@ -11,7 +11,7 @@ export const BOUTIQUE = {
   nom: lire(import.meta.env.VITE_BRAND_NAME, "Evanysca"),
   baseline: lire(
     import.meta.env.VITE_BRAND_TAGLINE,
-    "Pièces façonnées à la main, en série très limitée",
+    "Mode, parfums et maison",
   ),
   ville: lire(import.meta.env.VITE_BRAND_CITY, "Port-Gentil"),
   email: lire(import.meta.env.VITE_BRAND_EMAIL, ""),

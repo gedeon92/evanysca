@@ -8,7 +8,7 @@ export function NonTrouvee() {
       <h1 className="mt-6 font-serif text-5xl">Page introuvable</h1>
       <div className="rule-fade my-8 w-32" />
       <p className="text-sm leading-relaxed text-muted-foreground">
-        Cette page n'existe pas, ou la pièce que tu cherchais n'est plus en ligne.
+        Cette page n'existe pas, ou la pièce que vous cherchiez n'est plus en ligne.
       </p>
       <Link to="/collection" className={classesBouton({ className: "mt-10" })}>
         Voir la collection

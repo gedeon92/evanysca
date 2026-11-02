@@ -8,7 +8,7 @@ const QUESTIONS = [
   {
     question: "Faut-il créer un compte pour commander ?",
     reponse:
-      "Non. Il n'y a pas de compte client sur ce site. Tu composes ton panier, puis ta commande part sur WhatsApp, déjà rédigée.",
+      "Non. Il n'y a pas de compte client sur ce site. Vous composez votre panier, puis votre commande part sur WhatsApp, déjà rédigée.",
   },
   {
     question: "Comment se passe le paiement ?",
@@ -18,21 +18,21 @@ const QUESTIONS = [
   {
     question: "Mon panier est-il conservé ?",
     reponse:
-      "Oui, dans ton navigateur. Il reste disponible même après avoir envoyé ta commande : rien n'est effacé tant que tu ne le vides pas toi-même. En revanche, les prix et les disponibilités sont revérifiés à chaque visite.",
+      "Oui, dans votre navigateur. Il reste disponible même après avoir envoyé votre commande : rien n'est effacé tant que vous ne le videz pas vous-même. En revanche, les prix et les disponibilités sont revérifiés à chaque visite.",
   },
   {
     question: "Une pièce affichée « Épuisé » peut-elle revenir ?",
     reponse:
-      "Parfois. Les séries sont très courtes et ne sont pas systématiquement reconduites. Le plus sûr est de demander par message : certaines pièces sont refaites sur commande.",
+      "Souvent, selon les arrivages. Le plus sûr est de nous demander par message : nous vous prévenons dès son retour.",
   },
   {
     question: "Les teintes sont-elles fidèles aux photos ?",
     reponse:
-      "Nous photographions en lumière naturelle, sans retouche de couleur. Un écran reste un écran : en cas de doute sur une nuance, demande-nous une photo supplémentaire.",
+      "Un écran reste un écran : en cas de doute sur une nuance, demandez-nous une photo supplémentaire sur WhatsApp.",
   },
   {
     question: "Livrez-vous en dehors de la ville ?",
-    reponse: `Oui. Nous livrons à ${BOUTIQUE.ville} et en région. Les frais dépendent du lieu et sont annoncés avant tout règlement.`,
+    reponse: `Oui. Nous livrons à ${BOUTIQUE.ville} et envoyons vers Libreville. Les frais dépendent du lieu et sont annoncés avant tout règlement.`,
   },
 ];
 
@@ -68,7 +68,7 @@ export function Faq() {
       <Reveal className="mt-16 text-center">
         <p className="text-sm text-muted-foreground">Ta question n'est pas là ?</p>
         <Link to="/contact" className="link-underline mt-3 inline-block text-xs uppercase tracking-[0.25em]">
-          Écris-nous sur WhatsApp
+          Écrivez-nous sur WhatsApp
         </Link>
       </Reveal>
     </div>

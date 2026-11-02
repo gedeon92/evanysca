@@ -64,7 +64,7 @@ export function BoutonCommandeWhatsApp({
       </LienBouton>
 
       <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
-        WhatsApp s'ouvre avec ta commande déjà rédigée. Tu n'as plus qu'à l'envoyer.
+        WhatsApp s'ouvre avec votre commande déjà rédigée. Il ne reste qu'à l'envoyer.
       </p>
     </div>
   );

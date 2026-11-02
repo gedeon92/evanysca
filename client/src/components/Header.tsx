@@ -35,17 +35,11 @@ export function Header() {
     };
   }, [menuOuvert]);
 
-  // Sur l'accueil, l'en-tête flotte au-dessus de la photo du hero tant qu'on n'a pas défilé. En
-  // couleur de texte normale, il devient illisible dès que la photo est sombre : on bascule donc
-  // en texte clair, comme le titre du hero, jusqu'au premier défilement.
-  const surPhoto = emplacement.pathname === "/" && !defile;
-
   return (
     <header
       className={cn(
         "sticky top-0 z-40 transition-all duration-500",
         defile ? "border-b border-border bg-background/90 backdrop-blur" : "bg-transparent",
-        surPhoto && "text-background",
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-5 sm:px-8">
@@ -70,7 +64,7 @@ export function Header() {
               className={({ isActive }) =>
                 cn(
                   "link-underline text-[0.6875rem] uppercase tracking-[0.25em]",
-                  isActive && !surPhoto && "text-accent",
+                  isActive && "text-accent",
                 )
               }
             >
