@@ -1,7 +1,21 @@
 import { Clock, Instagram, Mail, MapPin, MessageCircle } from "lucide-react";
+import type { ReactNode } from "react";
+import { BannierePage } from "../components/BannierePage";
 import { Reveal } from "../components/Reveal";
 import { LienBouton } from "../components/ui/Bouton";
 import { BOUTIQUE, numeroWhatsAppAffiche, numeroWhatsAppValide } from "../lib/boutique";
+
+function Info({ icone, titre, children }: { icone: ReactNode; titre: string; children: ReactNode }) {
+  return (
+    <div className="flex gap-5 rounded-[calc(var(--radius)*0.66)] border border-border bg-card p-6 shadow-soft">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-gold">{icone}</span>
+      <div>
+        <p className="text-[0.625rem] uppercase tracking-[0.3em] text-muted-foreground">{titre}</p>
+        <div className="mt-2 text-sm leading-relaxed">{children}</div>
+      </div>
+    </div>
+  );
+}
 
 // Aucun formulaire, aucun e-mail envoyé : toute la relation passe par WhatsApp. Un formulaire de
 // contact donnerait l'illusion d'un canal qui n'existe pas dans ce projet.
@@ -11,100 +25,92 @@ export function Contact() {
   )}`;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-8 sm:py-16">
-      <Reveal>
-        <p className="eyebrow-accent">Contact</p>
-        <h1 className="mt-4 font-serif text-5xl leading-tight sm:text-6xl">Écrivez-nous</h1>
-        <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          Une question sur une pièce, une teinte, un délai ? Le plus simple est d'envoyer un
-          message : nous répondons dans la journée.
-        </p>
-      </Reveal>
+    <>
+      <BannierePage
+        surtitre="Contact"
+        titre="Parlons"
+        motCalligraphie="ensemble"
+        texte="Une question sur une pièce, une teinte, une taille ? Le plus simple est d'envoyer un message : nous vous répondons avec plaisir."
+        photo="/lookbook/look-4.jpg"
+      />
 
-      <div className="rule-fade my-12" />
-
-      <div className="grid gap-10 sm:grid-cols-2">
-        <Reveal>
-          <div className="rounded-[calc(var(--radius)*0.66)] border border-border bg-card p-8 shadow-soft">
-            <MessageCircle className="h-5 w-5 text-accent" aria-hidden />
-            <h2 className="mt-6 font-serif text-2xl">WhatsApp</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Le moyen le plus direct, pour une question comme pour une commande.
-            </p>
-
-            {numeroWhatsAppValide() ? (
-              <>
-                <p className="mt-6 text-sm">{numeroWhatsAppAffiche()}</p>
-                <LienBouton
-                  href={lienWhatsApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variante="whatsapp"
-                  className="mt-6 w-full"
-                >
-                  Ouvrir la conversation
-                </LienBouton>
-              </>
-            ) : (
-              <p className="mt-6 text-sm text-destructive">Numéro non configuré.</p>
-            )}
-          </div>
-        </Reveal>
-
-        <Reveal delai={0.1}>
-          <div className="space-y-8 p-2">
-            <div className="flex gap-4">
-              <MapPin className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-              <div>
-                <p className="eyebrow">Où nous trouver</p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {BOUTIQUE.ville} — sur rendez-vous, pris par message.
+      <div className="relative z-10 mx-auto -mt-10 max-w-5xl px-4 pb-20 sm:px-8 sm:pb-28">
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+          {/* Carte WhatsApp mise en avant : c'est le seul vrai canal de la boutique. */}
+          <Reveal>
+            <div className="relative overflow-hidden rounded-[var(--radius)] bg-card shadow-card ring-1 ring-gold/30">
+              <img src="/accueil/univers-femme.jpg" alt="" className="h-48 w-full object-cover object-top sm:h-56" />
+              <div className="p-8">
+                <span className="relative -mt-16 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card ring-4 ring-card">
+                  <MessageCircle className="h-6 w-6" aria-hidden />
+                </span>
+                <h2 className="mt-5 font-serif text-3xl">Sur WhatsApp</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Le moyen le plus direct, pour une question comme pour une commande. Photos
+                  supplémentaires, tailles, couleurs : demandez-nous.
                 </p>
-              </div>
-            </div>
 
-            <div className="flex gap-4">
-              <Clock className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-              <div>
-                <p className="eyebrow">Disponibilité</p>
-                <p className="mt-2 text-sm text-muted-foreground">Du lundi au samedi, de 9h à 19h.</p>
+                {numeroWhatsAppValide() ? (
+                  <>
+                    <p className="chiffres mt-6 font-serif text-2xl text-accent">{numeroWhatsAppAffiche()}</p>
+                    <LienBouton
+                      href={lienWhatsApp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variante="whatsapp"
+                      taille="lg"
+                      className="mt-6 w-full"
+                    >
+                      <MessageCircle className="h-4 w-4" aria-hidden />
+                      Ouvrir la conversation
+                    </LienBouton>
+                  </>
+                ) : (
+                  <p className="mt-6 text-sm text-destructive">Numéro non configuré.</p>
+                )}
               </div>
             </div>
+          </Reveal>
+
+          <Reveal delai={0.1} className="space-y-4 lg:pt-10">
+            <Info icone={<MapPin className="h-4 w-4" aria-hidden />} titre="Où nous trouver">
+              {BOUTIQUE.ville}, Gabon — sur rendez-vous, pris par message.
+            </Info>
+
+            <Info icone={<Clock className="h-4 w-4" aria-hidden />} titre="Disponibilité">
+              Du lundi au samedi, de 9h à 19h.
+            </Info>
 
             {BOUTIQUE.instagram && (
-              <div className="flex gap-4">
-                <Instagram className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-                <div>
-                  <p className="eyebrow">Instagram</p>
-                  <a
-                    href={`https://instagram.com/${BOUTIQUE.instagram.replace("@", "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-underline mt-2 block text-sm text-muted-foreground"
-                  >
-                    {BOUTIQUE.instagram}
-                  </a>
-                </div>
-              </div>
+              <Info icone={<Instagram className="h-4 w-4" aria-hidden />} titre="Instagram">
+                <a
+                  href={`https://instagram.com/${BOUTIQUE.instagram.replace("@", "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline"
+                >
+                  {BOUTIQUE.instagram}
+                </a>
+              </Info>
             )}
 
             {BOUTIQUE.email && (
-              <div className="flex gap-4">
-                <Mail className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-                <div>
-                  <p className="eyebrow">E-mail</p>
-                  <a
-                    href={`mailto:${BOUTIQUE.email}`}
-                    className="link-underline mt-2 block text-sm text-muted-foreground"
-                  >
-                    {BOUTIQUE.email}
-                  </a>
-                </div>
-              </div>
+              <Info icone={<Mail className="h-4 w-4" aria-hidden />} titre="E-mail">
+                <a href={`mailto:${BOUTIQUE.email}`} className="link-underline">
+                  {BOUTIQUE.email}
+                </a>
+              </Info>
             )}
-          </div>
-        </Reveal>
+
+            <div className="rounded-[calc(var(--radius)*0.66)] border border-dashed border-gold/50 p-6 text-center">
+              <p className="font-script text-3xl text-gold">Merci de votre confiance</p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Chaque commande est suivie personnellement, du premier message à la livraison.
+              </p>
+            </div>
+          </Reveal>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

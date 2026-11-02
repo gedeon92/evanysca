@@ -12,6 +12,9 @@ const LIENS = [
   { to: "/contact", libelle: "Contact" },
 ];
 
+// Pages qui commencent par un bandeau brun : la barre du haut en prend la couleur.
+const PAGES_SOMBRES = ["/", "/contact", "/faq"];
+
 export function Header() {
   const [menuOuvert, setMenuOuvert] = useState(false);
   const [defile, setDefile] = useState(false);
@@ -36,9 +39,9 @@ export function Header() {
     };
   }, [menuOuvert]);
 
-  // En haut de l'accueil, la barre prend le brun de la grande bannière pour ne faire qu'un avec
+  // En haut de ces pages, la barre prend le brun de la bannière pour ne faire qu'un avec
   // elle ; dès qu'on descend, elle redevient claire.
-  const surSombre = emplacement.pathname === "/" && !defile;
+  const surSombre = PAGES_SOMBRES.includes(emplacement.pathname) && !defile;
 
   return (
     <header
