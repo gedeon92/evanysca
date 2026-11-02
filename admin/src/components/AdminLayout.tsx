@@ -38,7 +38,7 @@ export function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen lg:flex">
+    <div className="min-h-screen lg:flex" style={{ maxWidth: "var(--largeur-visible, 100%)" }}>
       {tiroirOuvert && (
         <div
           className="fixed inset-0 z-30 animate-fade-in bg-foreground/20 backdrop-blur-sm lg:hidden"
