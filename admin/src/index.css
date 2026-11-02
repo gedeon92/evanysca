@@ -65,12 +65,12 @@
     @apply border-border;
   }
 
-  /* Le back-office est un outil de travail : sur ordinateur, tout est réduit d'un huitième pour
+  /* Le back-office est un outil de travail : sur ordinateur, tout est réduit d'un quart pour
      que liste et formulaires tiennent dans un écran de portable sans paraître zoomés. En
      pourcentage, pour respecter la taille de texte choisie dans le navigateur. Propre à l'admin. */
   @media (min-width: 1024px) {
     html {
-      font-size: 87.5%;
+      font-size: 75%;
     }
   }
 
