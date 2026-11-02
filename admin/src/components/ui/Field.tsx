@@ -39,7 +39,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
 }
 
 export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={cn(CLASSES_SAISIE, "min-h-[7rem] resize-y leading-relaxed", className)} {...props} />;
+  return <textarea className={cn(CLASSES_SAISIE, "min-h-[4.5rem] resize-y leading-relaxed", className)} {...props} />;
 }
 
 export function Select({ className, children, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {

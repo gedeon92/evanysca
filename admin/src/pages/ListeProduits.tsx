@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Package, Plus, Search } from "lucide-react";
+import { ChevronRight, Package, Plus, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listerCategories } from "../api/categories";
@@ -117,38 +117,35 @@ export function ListeProduits() {
             <li key={produit.id}>
               <Link
                 to={`/produits/${produit.id}`}
-                className="card-soft flex flex-wrap items-center gap-4 p-4 transition-shadow hover:shadow-card"
+                className="card-soft flex items-center gap-4 p-3 transition-shadow hover:shadow-card sm:p-4"
               >
                 {produit.image ? (
-                  <img src={produit.image} alt="" loading="lazy" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+                  <img src={produit.image} alt="" loading="lazy" className="h-20 w-16 shrink-0 rounded-xl object-cover sm:h-24 sm:w-20" />
                 ) : (
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-muted">
+                  <div className="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-muted sm:h-24 sm:w-20">
                     <Package className="h-5 w-5 text-muted-foreground" aria-hidden />
                   </div>
                 )}
 
+                {/* Sur téléphone, prix et stock passent sous le nom au lieu d'occuper une ligne à
+                    part : le nom garde toute la largeur et n'est plus coupé au bout de 15 lettres. */}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate">{produit.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {produit.line} — {produit.category.name}
+                  <p className="line-clamp-2 leading-snug">{produit.name}</p>
+                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    {produit.category.name} · <span className="font-mono">{produit.ref}</span>
                   </p>
-                  <p className="mt-1 truncate font-mono text-[0.6875rem] text-muted-foreground">{produit.ref}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2 sm:hidden">
+                    <span className="text-sm">{formatFcfa(produit.price)}</span>
+                    <EtatProduit produit={produit} />
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                  {!produit.isActive && <Badge ton="neutre">Masqué</Badge>}
-                  {produit.variantCount === 0 ? (
-                    <Badge ton="danger">Aucune teinte</Badge>
-                  ) : produit.totalStock === 0 ? (
-                    <Badge ton="danger">Épuisé</Badge>
-                  ) : produit.totalStock <= 3 ? (
-                    <Badge ton="alerte">Stock {produit.totalStock}</Badge>
-                  ) : (
-                    <Badge ton="succes">Stock {produit.totalStock}</Badge>
-                  )}
+                <div className="hidden shrink-0 flex-col items-end gap-2 sm:flex">
+                  <span className="text-sm">{formatFcfa(produit.price)}</span>
+                  <EtatProduit produit={produit} />
                 </div>
 
-                <p className="w-full shrink-0 text-sm sm:w-auto sm:text-right">{formatFcfa(produit.price)}</p>
+                <ChevronRight className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" aria-hidden />
               </Link>
             </li>
           ))}
@@ -157,5 +154,22 @@ export function ListeProduits() {
 
       {data && <Pagination page={data.page} totalPages={data.totalPages} total={data.total} onChange={setPage} />}
     </div>
+  );
+}
+
+function EtatProduit({ produit }: { produit: { isActive: boolean; variantCount: number; totalStock: number } }) {
+  return (
+    <span className="flex flex-wrap items-center gap-1.5">
+      {!produit.isActive && <Badge ton="neutre">Masqué</Badge>}
+      {produit.variantCount === 0 ? (
+        <Badge ton="danger">Aucune teinte</Badge>
+      ) : produit.totalStock === 0 ? (
+        <Badge ton="danger">Épuisé</Badge>
+      ) : produit.totalStock <= 3 ? (
+        <Badge ton="alerte">Stock {produit.totalStock}</Badge>
+      ) : (
+        <Badge ton="succes">Stock {produit.totalStock}</Badge>
+      )}
+    </span>
   );
 }

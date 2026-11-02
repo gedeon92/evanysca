@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 const texteEditorial = z.string().trim().min(1, "Ce champ est obligatoire.").max(5000);
+// Textes que la boutique n'affiche pas toujours : une fiche de parfum n'a ni matière ni
+// savoir-faire à raconter. Vides par défaut, le site masque alors la section correspondante.
+const texteFacultatif = z.string().trim().max(5000).default("");
 
 // Champs sans valeur par défaut : la création les complète, la mise à jour les rend tous
 // facultatifs. Les définir une seule fois évite que les deux schémas divergent avec le temps.
@@ -15,11 +18,11 @@ const champsProduit = {
   price: z.coerce.number().int("Le prix doit être un entier.").min(0, "Le prix ne peut pas être négatif."),
   detail: texteEditorial,
   shortDescription: texteEditorial,
-  story: texteEditorial,
-  designIntent: texteEditorial,
-  materials: texteEditorial,
-  craftsmanship: texteEditorial,
-  care: texteEditorial,
+  story: texteFacultatif,
+  designIntent: texteFacultatif,
+  materials: texteFacultatif,
+  craftsmanship: texteFacultatif,
+  care: texteFacultatif,
   tag: z.string().trim().max(40).nullable(),
   isActive: z.boolean(),
 };

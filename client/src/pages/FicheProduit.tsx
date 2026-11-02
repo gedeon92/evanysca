@@ -54,7 +54,7 @@ export function FicheProduit() {
               titre: "Matières & entretien",
               texte: [produit.materials, produit.care].filter(Boolean).join("\n\n"),
             },
-          ]
+          ].filter((section) => section.texte.trim())
         : [],
     [produit],
   );
@@ -274,7 +274,7 @@ export function FicheProduit() {
           </div>
 
           {/* --- Accordéon -------------------------------------------------------------- */}
-          <Accordion.Root type="single" collapsible defaultValue="detail" className="mt-12 border-t border-border">
+          <Accordion.Root type="single" collapsible defaultValue={sections[0]?.cle} className="mt-12 border-t border-border">
             {sections.map((section) => (
               <Accordion.Item key={section.cle} value={section.cle} className="border-b border-border">
                 <Accordion.Header>

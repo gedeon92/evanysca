@@ -37,14 +37,14 @@ const CHAMPS_VIDES: ChampsProduit = {
   isActive: true,
 };
 
+// Seuls les textes affichés par la boutique figurent ici. Histoire, intention de design et
+// savoir-faire existent encore en base mais le site ne les montre plus : les proposer à la
+// saisie ferait remplir des champs que personne ne lira.
 const TEXTES_EDITORIAUX = [
-  { cle: "shortDescription", label: "Description courte", aide: "Une phrase, affichée sous le nom en fiche produit." },
-  { cle: "detail", label: "Détails", aide: "Dimensions, poches, finitions." },
-  { cle: "story", label: "Histoire", aide: "D'où vient cette pièce." },
-  { cle: "designIntent", label: "Intention de design", aide: "Le parti pris assumé." },
-  { cle: "materials", label: "Matières" },
-  { cle: "craftsmanship", label: "Savoir-faire" },
-  { cle: "care", label: "Entretien" },
+  { cle: "shortDescription", label: "Description courte", aide: "Une phrase, affichée sous le nom sur la fiche produit.", obligatoire: true, lignes: 2 },
+  { cle: "detail", label: "Détails", aide: "Coupe, tailles, contenance, finitions.", obligatoire: true, lignes: 4 },
+  { cle: "materials", label: "Matières", aide: "Facultatif.", obligatoire: false, lignes: 2 },
+  { cle: "care", label: "Entretien", aide: "Facultatif.", obligatoire: false, lignes: 2 },
 ] as const;
 
 export function ProduitFormulaire() {
@@ -277,23 +277,18 @@ export function ProduitFormulaire() {
           <div>
             <h2 className="font-serif text-2xl">Textes</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Ils alimentent l'accordéon de la fiche produit. Tous sont obligatoires.
+              Affichés sur la fiche produit du site. Une section laissée vide n'apparaît pas.
             </p>
           </div>
 
           <div className="space-y-5">
-            {TEXTES_EDITORIAUX.map(({ cle, label, ...reste }) => (
-              <Field
-                key={cle}
-                label={label}
-                erreur={erreurs[cle]}
-                obligatoire
-                aide={"aide" in reste ? reste.aide : undefined}
-              >
+            {TEXTES_EDITORIAUX.map(({ cle, label, aide, obligatoire, lignes }) => (
+              <Field key={cle} label={label} erreur={erreurs[cle]} obligatoire={obligatoire} aide={aide}>
                 <Textarea
                   value={champs[cle]}
                   onChange={(e) => setChamps({ ...champs, [cle]: e.target.value })}
-                  required
+                  required={obligatoire}
+                  rows={lignes}
                 />
               </Field>
             ))}

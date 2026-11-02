@@ -50,7 +50,8 @@ export function AdminLayout() {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-border bg-card px-6 py-8",
-          "transition-transform duration-500 lg:static lg:translate-x-0",
+          // Sur ordinateur, le menu reste en place pendant qu'on fait défiler une longue fiche produit.
+          "transition-transform duration-500 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0",
           tiroirOuvert ? "translate-x-0" : "-translate-x-full",
         )}
         style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
@@ -115,7 +116,8 @@ export function AdminLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <p className="font-serif text-xl">Administration</p>
+          <p className="font-serif text-xl">{BOUTIQUE.nom}</p>
+          <span className="eyebrow-accent ml-auto">Admin</span>
         </header>
 
         <main className="flex-1 px-4 py-8 sm:px-8 lg:px-12">
